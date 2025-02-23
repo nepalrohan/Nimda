@@ -1,4 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+
+interface CommandProps {
+  children: ReactNode;
+  className?: string;
+}
+
+
+
 import {
   Command,
   CommandEmpty,
@@ -11,6 +19,10 @@ import {
 } from "@/components/ui/command";
 import Link from 'next/link';
 import { LayoutDashboard, Newspaper, Folders, CreditCard, Settings, User } from "lucide-react";
+
+export const Command = ({ children, className }: CommandProps) => {
+  return <div className={className}>{children}</div>;
+};
 
 function Sidebar() {
   return (
