@@ -32,7 +32,7 @@ const formSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }),
 });
 
-function page({ params }: PostEditPageProps) {
+function PostEditpage({ params }: PostEditPageProps) {
   const post = posts.find((post) => post.id === params.id);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -144,4 +144,4 @@ function page({ params }: PostEditPageProps) {
   );
 }
 
-export default page;
+export default PostEditpage;
