@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import BackButton from "@/components/BackButton";
 import * as z from "zod";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -57,7 +57,7 @@ const PostEditPage = ({ params }: PostEditPageProps) => {
     },
   });
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit: SubmitHandler<FormData> = (data) => {
     toast("Post Updated Successfully");
     console.log(data);
     // You can handle saving the form data here
