@@ -1,14 +1,16 @@
 import React, { ReactNode } from 'react';
 
-interface CommandProps {
+interface CustomCommandProps {
   children: ReactNode;
   className?: string;
 }
 
-
+export const CustomCommand = ({ children, className }: CustomCommandProps) => {
+  return <div className={className}>{children}</div>;
+};
 
 import {
-  Command,
+  Command as UICommand,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -20,14 +22,10 @@ import {
 import Link from 'next/link';
 import { LayoutDashboard, Newspaper, Folders, CreditCard, Settings, User } from "lucide-react";
 
-export const Command = ({ children, className }: CommandProps) => {
-  return <div className={className}>{children}</div>;
-};
-
 function Sidebar() {
   return (
     <div className='h-full'>
-      <Command className='bg-secondary rounded-none'>
+      <UICommand className='bg-secondary rounded-none'>
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
@@ -64,7 +62,7 @@ function Sidebar() {
             </CommandItem>
           </CommandGroup>
         </CommandList>
-      </Command>
+      </UICommand>
     </div>
   );
 }
