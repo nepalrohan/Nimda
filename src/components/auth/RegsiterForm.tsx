@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import BackButton from "@/components/BackButton";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,7 +35,7 @@ function RegsiterForm() {
     },
   });
 
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
+  const handleSubmit = () => {
 router.push('/');
   };
 

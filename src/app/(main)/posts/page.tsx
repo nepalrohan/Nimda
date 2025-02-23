@@ -3,7 +3,7 @@ import PostTable from '@/components/posts/PostTable'
 import BackButton from '@/components/BackButton'
 import PostPagination from '@/components/posts/PostPagination'
 
-function page() {
+function Editpage() {
   return (
     <>
     <BackButton text='Go Back' link='/' />
@@ -15,4 +15,4 @@ function page() {
 
 
 
-export default page
+export default Editpage
