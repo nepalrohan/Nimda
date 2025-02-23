@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BackButton from "@/components/BackButton";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -30,15 +30,20 @@ interface PostEditPageProps {
   params: {
     id: string;
   };
-  post: {
-    title: string;
-    body: string;
-    author: string;
-    date: string;
-  };
 }
 
-const PostEditPage = ({ params, post }: PostEditPageProps) => {
+const PostEditPage = ({ params }: PostEditPageProps) => {
+  const [post, setPost] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      const post = posts.find((post) => post.id === params.id);
+      setPost(post);
+    };
+
+    fetchPost();
+  }, [params.id]);
+
   // Handle form initialization based on `post` data
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,6 +60,10 @@ const PostEditPage = ({ params, post }: PostEditPageProps) => {
     console.log(data);
     // You can handle saving the form data here
   };
+
+  if (!post) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -151,17 +160,5 @@ const PostEditPage = ({ params, post }: PostEditPageProps) => {
     </>
   );
 };
-
-export async function getServerSideProps(context: any) {
-  const { id } = context.params;
-  const post = posts.find((post) => post.id === id);
-
-  return {
-    props: {
-      params: { id },
-      post,
-    },
-  };
-}
 
 export default PostEditPage;
