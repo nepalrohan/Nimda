@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import BackButton from "@/components/BackButton";
 import * as z from "zod";
@@ -19,12 +18,7 @@ import { Button } from "@/components/ui/button";
 import posts from "../../../../../../data/post";
 import { toast } from "sonner";
 
-interface PostEditPageProps {
-  params: {
-    id: string;
-  };
-}
-
+// Define your schema
 const formSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
   body: z.string().min(1, { message: "Body is required" }),
@@ -32,8 +26,32 @@ const formSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }),
 });
 
-function PostEditpage({ params }: PostEditPageProps) {
-  const post = posts.find((post) => post.id === params.id);
+interface PostEditPageProps {
+  params: {
+    id: string;
+  };
+}
+
+export async function getServerSideProps(context: any) {
+  const { id } = context.params; // Extract the dynamic parameter `id` from the context
+
+  // Here you can fetch the post data based on the `id`
+  const post = posts.find((post) => post.id === id);
+
+  // If post is not found, you can redirect or return a notFound response
+  if (!post) {
+    return { notFound: true };
+  }
+
+  return {
+    props: {
+      params: { id }, // Pass params as part of the props
+      post, // Optionally pass the post data if needed
+    },
+  };
+}
+
+function PostEditPage({ params, post }: PostEditPageProps & { post: any }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,7 +63,7 @@ function PostEditpage({ params }: PostEditPageProps) {
   });
 
   const handleSubmit = () => {
-    toast("Post Updated Sucessfully");
+    toast("Post Updated Successfully");
   };
 
   return (
@@ -144,4 +162,4 @@ function PostEditpage({ params }: PostEditPageProps) {
   );
 }
 
-export default PostEditpage;
+export default PostEditPage;
