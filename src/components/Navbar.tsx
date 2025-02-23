@@ -12,6 +12,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
+import { ModeToggle } from './ThemeTogler'
 
 
 
@@ -29,7 +30,8 @@ width={40}
 />
 </Link>
 
-
+<div className="flex items-center">
+  <ModeToggle/>
 <DropdownMenu>
   <DropdownMenuTrigger className='focus:outline-none'>
 
@@ -53,6 +55,8 @@ width={40}
   
   </DropdownMenuContent>
 </DropdownMenu>
+
+</div>
     </div>
   )
 }

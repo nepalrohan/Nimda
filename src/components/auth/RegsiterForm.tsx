@@ -15,59 +15,69 @@ import {
 } from "@/components/ui/form";
 
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import posts from "../../../../../../data/post";
-import { toast } from "sonner";
+import {Card, CardContent,CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
-interface PostEditPageProps {
-  params: {
-    id: string;
-  };
-}
+
 
 const formSchema = z.object({
-  title: z.string().min(1, { message: "Title is required" }),
-  body: z.string().min(1, { message: "Body is required" }),
-  author: z.string().min(1, { message: "Author is required" }),
-  date: z.string().min(1, { message: "Date is required" }),
+    fullname:z.string({message:"Fullname is required"}).min(3, {message:"Fullname must be 3 character long"}),
+  email: z.string().min(1, { message: "Email is required" }).email({message:"Please enter a valid email address"}),
+  password: z.string().min(1, { message: "Password is required" }),
+  
 });
 
-function page({ params }: PostEditPageProps) {
-  const post = posts.find((post) => post.id === params.id);
+function RegsiterForm() {
+    const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: post?.title || "",
-      body: post?.body || "",
-      author: post?.author || "",
-      date: post?.date || "",
+     email:'',
+     password:''
     },
   });
 
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
-    toast("Post Updated Sucessfully");
+router.push('/');
   };
 
   return (
     <>
-      <BackButton text="back to Post" link="/posts" />
 
-      <h3 className="text-2xl mb-4">Edit Post</h3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-          <FormField
+        <FormField
             control={form.control}
-            name="title"
+            name="fullname"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
-                  Title
+                  Fullname
                 </FormLabel>
                 <FormControl>
                   <Input
                     className="bg-slate-100 dark:bg-slate-500  border-0 focus-visible:ring-0 text-black dark:text-white focus-visible:ring-offset-0 "
-                    placeholder="Enter title"
+                    placeholder="Enter fullname"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
+                  Email
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="bg-slate-100 dark:bg-slate-500  border-0 focus-visible:ring-0 text-black dark:text-white focus-visible:ring-offset-0 "
+                    placeholder="Enter email"
                     {...field}
                   />
                 </FormControl>
@@ -76,18 +86,20 @@ function page({ params }: PostEditPageProps) {
             )}
           />
 
+        
+
           <FormField
             control={form.control}
-            name="body"
+            name="password"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
-                  Body
+                  Password
                 </FormLabel>
                 <FormControl>
-                  <Textarea
+                  <Input
                     className="bg-slate-100 dark:bg-slate-500  border-0 focus-visible:ring-0 text-black dark:text-white focus-visible:ring-offset-0 "
-                    placeholder="Enter body"
+                    placeholder="Enter password"
                     {...field}
                   />
                 </FormControl>
@@ -96,48 +108,10 @@ function page({ params }: PostEditPageProps) {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="author"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
-                  Author
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-slate-100 dark:bg-slate-500  border-0 focus-visible:ring-0 text-black dark:text-white focus-visible:ring-offset-0 "
-                    placeholder="Enter author"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="date"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-white">
-                  Date
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-slate-100 dark:bg-slate-500  border-0 focus-visible:ring-0 text-black dark:text-white focus-visible:ring-offset-0 "
-                    placeholder="Enter date"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          
 
           <Button className="w-full dark:bg-slate-800 dark:text-white text-center">
-            Update Post
+            Register
           </Button>
         </form>
       </Form>
@@ -145,4 +119,4 @@ function page({ params }: PostEditPageProps) {
   );
 }
 
-export default page;
+export default RegsiterForm;
