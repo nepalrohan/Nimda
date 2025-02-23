@@ -44,7 +44,7 @@ function PostEditpage({ params }: PostEditPageProps) {
     },
   });
 
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
+  const handleSubmit = () => {
     toast("Post Updated Sucessfully");
   };
 
