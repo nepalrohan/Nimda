@@ -31,9 +31,7 @@ type FormData = z.infer<typeof formSchema>;
 
 // Type for your props, making sure `params` are passed correctly
 interface PostEditPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 interface Post {
@@ -49,12 +47,13 @@ const PostEditPage = ({ params }: PostEditPageProps) => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const post = posts.find((post) => post.id === params.id);
+      const { id } = await params;
+      const post = posts.find((post) => post.id === id);
       setPost(post || null);
     };
 
     fetchPost();
-  }, [params.id]);
+  }, [params]);
 
   // Handle form initialization based on `post` data
   const form = useForm<FormData>({
