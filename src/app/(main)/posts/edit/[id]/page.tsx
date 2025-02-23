@@ -1,3 +1,6 @@
+// src/app/posts/edit/[id]/page.tsx
+
+"use client";
 import React from "react";
 import BackButton from "@/components/BackButton";
 import * as z from "zod";
@@ -11,14 +14,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import posts from "../../../../../../data/post";
+import posts from "../../../../../../data/post"; // Adjust if necessary
 import { toast } from "sonner";
 
-// Define your schema
+// Define your form schema
 const formSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
   body: z.string().min(1, { message: "Body is required" }),
@@ -28,30 +30,14 @@ const formSchema = z.object({
 
 interface PostEditPageProps {
   params: {
-    id: string;
+    id: string; // `id` from the dynamic route
   };
 }
 
-export async function getServerSideProps(context: any) {
-  const { id } = context.params; // Extract the dynamic parameter `id` from the context
+const PostEditPage = ({ params }: PostEditPageProps) => {
+  const post = posts.find((post) => post.id === params.id);
 
-  // Here you can fetch the post data based on the `id`
-  const post = posts.find((post) => post.id === id);
-
-  // If post is not found, you can redirect or return a notFound response
-  if (!post) {
-    return { notFound: true };
-  }
-
-  return {
-    props: {
-      params: { id }, // Pass params as part of the props
-      post, // Optionally pass the post data if needed
-    },
-  };
-}
-
-function PostEditPage({ params, post }: PostEditPageProps & { post: any }) {
+  // Handle default values for the form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -62,13 +48,14 @@ function PostEditPage({ params, post }: PostEditPageProps & { post: any }) {
     },
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = (data: any) => {
     toast("Post Updated Successfully");
+    // You can handle saving the form data here
   };
 
   return (
     <>
-      <BackButton text="back to Post" link="/posts" />
+      <BackButton text="Back to Posts" link="/posts" />
 
       <h3 className="text-2xl mb-4">Edit Post</h3>
       <Form {...form}>
@@ -160,6 +147,6 @@ function PostEditPage({ params, post }: PostEditPageProps & { post: any }) {
       </Form>
     </>
   );
-}
+};
 
 export default PostEditPage;
