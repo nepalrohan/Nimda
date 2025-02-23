@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
 import BackButton from "@/components/BackButton";
 import * as z from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -27,6 +27,8 @@ const formSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }),
 });
 
+type FormData = z.infer<typeof formSchema>;
+
 // Type for your props, making sure `params` are passed correctly
 interface PostEditPageProps {
   params: {
@@ -34,20 +36,28 @@ interface PostEditPageProps {
   };
 }
 
+interface Post {
+  id: string;
+  title: string;
+  body: string;
+  author: string;
+  date: string;
+}
+
 const PostEditPage = ({ params }: PostEditPageProps) => {
-  const [post, setPost] = useState<any>(null);
+  const [post, setPost] = useState<Post | null>(null);
 
   useEffect(() => {
     const fetchPost = async () => {
       const post = posts.find((post) => post.id === params.id);
-      setPost(post);
+      setPost(post || null);
     };
 
     fetchPost();
   }, [params.id]);
 
   // Handle form initialization based on `post` data
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: post?.title || "",
