@@ -1,9 +1,21 @@
 import React, { ReactNode } from 'react';
 
+interface CommandProps {
+  children: ReactNode;
+  className?: string;
+}
+
+
+
+
 interface CustomCommandProps {
   children: ReactNode;
   className?: string;
 }
+export const Command = ({ children, className }: CommandProps) => {
+  return <div className={className}>{children}</div>;
+}; 
+
 
 export const CustomCommand = ({ children, className }: CustomCommandProps) => {
   return <div className={className}>{children}</div>;
