@@ -1,6 +1,5 @@
 // src/app/posts/edit/[id]/page.tsx
 
-"use client";
 import React from "react";
 import BackButton from "@/components/BackButton";
 import * as z from "zod";
@@ -28,16 +27,19 @@ const formSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }),
 });
 
+// Type for your props, making sure `params` are passed correctly
 interface PostEditPageProps {
   params: {
-    id: string; // `id` from the dynamic route
+    id: string;
   };
 }
 
-const PostEditPage = ({ params }: PostEditPageProps) => {
+// `async` function for handling dynamic params in server component
+const PostEditPage = async ({ params }: PostEditPageProps) => {
+  // You can find the post directly here based on the dynamic `id` in the params
   const post = posts.find((post) => post.id === params.id);
 
-  // Handle default values for the form
+  // Handle form initialization based on `post` data
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,8 +50,9 @@ const PostEditPage = ({ params }: PostEditPageProps) => {
     },
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = (data: any) => {
     toast("Post Updated Successfully");
+    console.log(data);
     // You can handle saving the form data here
   };
 
