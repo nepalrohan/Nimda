@@ -1,5 +1,3 @@
-// src/app/posts/edit/[id]/page.tsx
-
 import React from "react";
 import BackButton from "@/components/BackButton";
 import * as z from "zod";
@@ -32,13 +30,15 @@ interface PostEditPageProps {
   params: {
     id: string;
   };
+  post: {
+    title: string;
+    body: string;
+    author: string;
+    date: string;
+  };
 }
 
-// `async` function for handling dynamic params in server component
-const PostEditPage = async ({ params }: PostEditPageProps) => {
-  // You can find the post directly here based on the dynamic `id` in the params
-  const post = posts.find((post) => post.id === params.id);
-
+const PostEditPage = ({ params, post }: PostEditPageProps) => {
   // Handle form initialization based on `post` data
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -151,5 +151,17 @@ const PostEditPage = async ({ params }: PostEditPageProps) => {
     </>
   );
 };
+
+export async function getServerSideProps(context: any) {
+  const { id } = context.params;
+  const post = posts.find((post) => post.id === id);
+
+  return {
+    props: {
+      params: { id },
+      post,
+    },
+  };
+}
 
 export default PostEditPage;
