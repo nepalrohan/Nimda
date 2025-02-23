@@ -48,7 +48,7 @@ const PostEditPage = ({ params }: PostEditPageProps) => {
     },
   });
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = () => {
     toast("Post Updated Successfully");
     // You can handle saving the form data here
   };
